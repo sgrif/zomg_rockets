@@ -22,7 +22,7 @@ fn main() {
     let thor_vernier = LR101_NA_3.with_burn_time(LR79_NA_9.burn_time);
     let thor = SimpleStage { dry_mass: 3350.0, engines: vec![LR79_NA_9, thor_vernier, thor_vernier] };
     let thor_vernier = LR101_NA_3.with_burn_time(LR79_NA_11.burn_time);
-    let thor_b = SimpleStage { dry_mass: 3530.0, engines:vec![LR79_NA_11, thor_vernier, thor_vernier] };
+    let thor_b = SimpleStage { dry_mass: 3690.0, engines:vec![LR79_NA_11, thor_vernier, thor_vernier] };
     let atlas_vernier = LR101_NA_3.with_burn_time(LR105_NA_3.burn_time);
     let atlas_a = BoostedStage {
         core: SimpleStage { dry_mass: 5400.0, engines: vec![LR105_NA_3, atlas_vernier, atlas_vernier] },
@@ -41,19 +41,19 @@ fn main() {
 
 
     let mut rocket = Rocket {
-        stages: vec![Box::new(atlas_b), Box::new(agena_b), Box::new(probe_200kg)],
+        stages: vec![Box::new(atlas_b), Box::new(agena_b)],
         payload_mass: 0.0,
     };
-    // rocket.set_payload_for_target_deltav(DV_TO_ORBIT);
-    // println!("Max to orbit: {}", rocket.payload_mass);
-    // rocket.set_payload_for_target_deltav(DV_TO_GTO * 1.05);
-    // println!("Max to GTO: {}", rocket.payload_mass);
-    // rocket.set_payload_for_target_deltav(DV_TO_GEO * 1.05);
-    // println!("Max to GEO: {}", rocket.payload_mass);
-    // rocket.set_payload_for_target_deltav(DV_TO_TLI * 1.05);
-    // println!("Max to TLI: {}", rocket.payload_mass);
+    rocket.set_payload_for_target_deltav(DV_TO_ORBIT);
+    println!("Max to orbit: {}", rocket.payload_mass);
+    rocket.set_payload_for_target_deltav(DV_TO_GTO * 1.05);
+    println!("Max to GTO: {}", rocket.payload_mass);
+    rocket.set_payload_for_target_deltav(DV_TO_GEO * 1.05);
+    println!("Max to GEO: {}", rocket.payload_mass);
+    rocket.set_payload_for_target_deltav(DV_TO_TLI * 1.05);
+    println!("Max to TLI: {}", rocket.payload_mass);
 
-    // rocket.set_payload_for_target_deltav(DV_TO_ORBIT);
+    rocket.set_payload_for_target_deltav(DV_TO_ORBIT);
     println!("{:5}  {:>10}  {:>10}  {:>10}  {:>10}", "stage", "delta-v", "wet mass", "dry mass", "burn time");
     let reversed_stages = rocket.stages().enumerate().collect::<Vec<_>>().into_iter().rev();
     for (i, stage) in reversed_stages {
@@ -62,7 +62,7 @@ fn main() {
     println!("Total: {:10.0}", rocket.delta_v());
     println!("Max G Force Endured: {}", rocket.max_g_force());
 
-    print_where_rocket_can_go(&rocket);
+    // print_where_rocket_can_go(&rocket);
 }
 
 const DECOUPLER_MASS: f64 = 52.0;
